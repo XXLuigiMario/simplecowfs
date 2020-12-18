@@ -32,6 +32,8 @@
 
 #include <sys/ioctl.h>
 
+FILE* logFile;
+
 static int xmp_getattr(const char *path, struct stat *stbuf)
 {
 	int res;
@@ -351,6 +353,7 @@ static int xmp_read(const char *path, char *buf, size_t size, off_t offset,
 	int res;
 
 	(void) path;
+	fprintf(logFile, "[%ld] %s (off=%ld, size=%ld)\n", fi->fh, path, offset, size);
 	res = pread(fi->fh, buf, size, offset);
 	if (res == -1)
 		res = -errno;
@@ -515,5 +518,7 @@ static struct fuse_operations xmp_oper = {
 int main(int argc, char *argv[])
 {
 	umask(0);
+	logFile = fopen("/tmp/demote.log", "wb");
+	fprintf(logFile, "***** main *****");
 	return fuse_main(argc, argv, &xmp_oper, NULL);
 }
