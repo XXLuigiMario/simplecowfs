@@ -353,7 +353,7 @@ static int xmp_read(const char *path, char *buf, size_t size, off_t offset,
 	int res;
 
 	(void) path;
-	fprintf(logFile, "[%ld] %s (off=%ld, size=%ld)\n", fi->fh, path, offset, size);
+	fprintf(logFile, "[%lld] %s (off=%lld, size=%d)\n", fi->fh, path, offset, size);
 	res = pread(fi->fh, buf, size, offset);
 	if (res == -1)
 		res = -errno;
