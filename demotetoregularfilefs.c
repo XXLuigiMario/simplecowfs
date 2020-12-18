@@ -354,6 +354,7 @@ static int xmp_read(const char *path, char *buf, size_t size, off_t offset,
 
 	(void) path;
 	fprintf(logFile, "[%lld] %s (off=%lld, size=%d)\n", fi->fh, path, offset, size);
+	fflush(logFile);
 	res = pread(fi->fh, buf, size, offset);
 	if (res == -1)
 		res = -errno;
@@ -519,6 +520,7 @@ int main(int argc, char *argv[])
 {
 	umask(0);
 	logFile = fopen("/tmp/demote.log", "wb");
-	fprintf(logFile, "***** main *****");
+	fprintf(logFile, "***** main *****\n");
+	fflush(logFile);
 	return fuse_main(argc, argv, &xmp_oper, NULL);
 }
