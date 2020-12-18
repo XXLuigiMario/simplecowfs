@@ -353,14 +353,14 @@ static int xmp_read(const char *path, char *buf, size_t size, off_t offset,
 	int res;
 
 	(void) path;
-	fprintf(logFile, "[%lld] %s (off=%lld, size=%d)\n", fi->fh, path, offset, size);
-	fflush(logFile);
 	res = pread(fi->fh, buf, size, offset);
 	if (res == -1) {
 		fprintf(logFile, "[%lld] %s\n", fi->fh, strerror(errno));
 		fflush(logFile);
 		res = -errno;
 	}
+	fprintf(logFile, "[%lld] %s (off=%lld, want=%d, got=%d)\n", fi->fh, path, offset, size, res);
+	fflush(logFile);
 
 	return res;
 }
